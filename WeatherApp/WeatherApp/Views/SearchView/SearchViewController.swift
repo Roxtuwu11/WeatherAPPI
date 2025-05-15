@@ -86,7 +86,9 @@ extension SearchViewControllerViewController: UISearchResultsUpdating, UISearchB
               !cityName.isEmpty else { return }
 
         self.viewModel.saveCity(cityName: cityName)
-        searchBar.resignFirstResponder() 
+        self.city = self.viewModel.showCities()
+        self.cityTable.reloadData()
+        searchBar.resignFirstResponder()
       
 
 
