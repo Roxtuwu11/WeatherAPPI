@@ -18,7 +18,9 @@ class SearchViewControllerViewController: UIViewController
   
     @IBOutlet weak var cityTable: UITableView!
 
+    var city = [City]()
     let searchController =  UISearchController()
+    var viewModel = WeatherViewModel()
   // MARK: Object lifecycle
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
@@ -55,9 +57,10 @@ class SearchViewControllerViewController: UIViewController
         cityTable.dataSource = self
         cityTable.delegate = self
     }
- 
-  
-  // MARK: Routing
+    func configureViewController() {
+        self.city = self.viewModel.showCities()
+        self.cityTable.reloadData()
+    }
   
 
   
@@ -66,6 +69,8 @@ class SearchViewControllerViewController: UIViewController
     override func viewDidLoad() {
         initSearchController()
         initTable()
+        configureViewController()
+     
     }
 
   
@@ -76,17 +81,45 @@ extension SearchViewControllerViewController: UISearchResultsUpdating, UISearchB
         let searchBar =  searchController.searchBar
         
     }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let cityName = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !cityName.isEmpty else { return }
+
+        self.viewModel.saveCity(cityName: cityName)
+        self.city = self.viewModel.showCities()
+        self.cityTable.reloadData()
+        searchBar.resignFirstResponder()
+      
+
+
+    }
 
     
 }
 
 extension SearchViewControllerViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return city.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        
+        let cellCity  = (tableView.dequeueReusableCell(withIdentifier: "CityTableViewCell", for: indexPath) as! CityTableViewCell)
+        cellCity.city = self.city.count > 0 ? self
+            .city[indexPath.row] : nil
+           
+        return cellCity
+    }
+    func tableView(
+        _ tableView: UITableView,
+        commit editingStyle: UITableViewCell.EditingStyle,
+        forRowAt indexPath: IndexPath
+    ) {
+        if editingStyle == .delete {
+            viewModel.deleteCities(city: city[indexPath.row])
+        }
+        self.city = self.viewModel.showCities()
+        cityTable.reloadData()
     }
 
 }

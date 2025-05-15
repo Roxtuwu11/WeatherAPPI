@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct City: Codable {
+struct CityModel: Codable {
     var id = UUID()
     let name: String
     let coordinates: String
