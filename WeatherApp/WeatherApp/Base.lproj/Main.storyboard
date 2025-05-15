@@ -32,18 +32,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="4RU-jA-OVQ">
-                                <rect key="frame" x="0.0" y="113" width="393" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="ieD-av-Uee"/>
-                                </constraints>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="gxh-a2-N1x"/>
-                                </connections>
-                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Ezg-Ac-75Q">
-                                <rect key="frame" x="10" y="167" width="373" height="641"/>
+                                <rect key="frame" x="10" y="113" width="373" height="695"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="6ez-Hh-j7A">
@@ -75,11 +65,8 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ezg-Ac-75Q" secondAttribute="trailing" constant="10" id="2Ro-7N-bO5"/>
                             <constraint firstItem="Ezg-Ac-75Q" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="3lW-W5-T9f"/>
-                            <constraint firstItem="Ezg-Ac-75Q" firstAttribute="top" secondItem="4RU-jA-OVQ" secondAttribute="bottom" constant="10" id="DOb-sR-N9y"/>
+                            <constraint firstItem="Ezg-Ac-75Q" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="ENh-YY-9lz"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Ezg-Ac-75Q" secondAttribute="bottom" constant="10" id="P9a-fm-5vc"/>
-                            <constraint firstItem="4RU-jA-OVQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Pez-vS-YO9"/>
-                            <constraint firstItem="4RU-jA-OVQ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="XF4-ph-jgg"/>
-                            <constraint firstAttribute="trailing" secondItem="4RU-jA-OVQ" secondAttribute="trailing" id="Ykg-sA-dsU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="WeatherApp" id="uEF-jp-keq"/>
