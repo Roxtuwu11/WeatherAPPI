@@ -14,8 +14,9 @@ class WeatherViewModel {
     var isLoading = true
     var showErrorAlert = false
     var messageError = ""
-    
-    
+    var currentWeather: WeatherData?
+    var historicalWeather: WeatherData?
+    private let service = WeatherService()
     func connectBD() -> NSManagedObjectContext {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         return delegate.persistentContainer.viewContext
@@ -62,6 +63,42 @@ class WeatherViewModel {
             print("Error al guardar: \(error.localizedDescription)")
         }
     }
+    func getCurrentWeather(latitude: Float, longitude: Float)
+    {
+        
+        let request = RequestWeather(
+            latitude: latitude,
+            longitude: longitude,currentWeather: true
+           
+        )
+        
+        service.fetchWeather(request: request) { result in
+            guard let currentWeather = result else {return }
+            self.currentWeather = currentWeather
+        } onFailure: { error in
+            self.presentError(error: error)
+        }
+
+    }
+    
+    func getHistoricalWeather(latitude: Float, longitude: Float)
+    {
+       
+        let request = RequestWeather(
+            latitude: latitude,
+            longitude: longitude,pastDays: 10, hourly: ["temperature_2m","relative_humidity_2m","wind_speed_10m"]
+           
+        )
+        
+        service.fetchWeather(request: request) { result in
+            guard let currentWeather = result else {return }
+            self.historicalWeather = currentWeather
+        } onFailure: { error in
+            self.presentError(error: error)
+        }
+
+    }
+    
     func presentError(error: Error?) {
         self.isLoading = false
         guard let err = error else { return  }
