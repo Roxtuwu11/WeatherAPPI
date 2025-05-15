@@ -20,6 +20,7 @@ class SearchViewControllerViewController: UIViewController
 
     var city = [City]()
     let searchController =  UISearchController()
+    var viewModel = WeatherViewModel()
   // MARK: Object lifecycle
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
@@ -56,9 +57,10 @@ class SearchViewControllerViewController: UIViewController
         cityTable.dataSource = self
         cityTable.delegate = self
     }
- 
-  
-  // MARK: Routing
+    func configureViewController() {
+        self.city = self.viewModel.showCities()
+        self.cityTable.reloadData()
+    }
   
 
   
@@ -67,6 +69,8 @@ class SearchViewControllerViewController: UIViewController
     override func viewDidLoad() {
         initSearchController()
         initTable()
+        configureViewController()
+     
     }
 
   
@@ -76,6 +80,16 @@ extension SearchViewControllerViewController: UISearchResultsUpdating, UISearchB
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar =  searchController.searchBar
         
+    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let cityName = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !cityName.isEmpty else { return }
+
+        self.viewModel.saveCity(cityName: cityName)
+        searchBar.resignFirstResponder() 
+      
+
+
     }
 
     
@@ -99,7 +113,11 @@ extension SearchViewControllerViewController: UITableViewDataSource, UITableView
         commit editingStyle: UITableViewCell.EditingStyle,
         forRowAt indexPath: IndexPath
     ) {
-        
+        if editingStyle == .delete {
+            viewModel.deleteCities(city: city[indexPath.row])
+        }
+        self.city = self.viewModel.showCities()
+        cityTable.reloadData()
     }
 
 }

@@ -51,6 +51,17 @@ class WeatherViewModel {
         return city
     }
     
+    func deleteCities(city: City)
+    {
+        let context = connectBD()
+        context.delete(city)
+        do {
+            try context.save()
+        }
+        catch let error as NSError {
+            print("Error al guardar: \(error.localizedDescription)")
+        }
+    }
     func presentError(error: Error?) {
         self.isLoading = false
         guard let err = error else { return  }
