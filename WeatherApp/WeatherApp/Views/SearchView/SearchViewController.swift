@@ -32,6 +32,7 @@ class SearchViewControllerViewController: UIViewController
     super.init(coder: aDecoder)
   
   }
+ 
   
   // MARK: Setup
     func initSearchController() {
@@ -62,20 +63,11 @@ class SearchViewControllerViewController: UIViewController
   
   // MARK: View lifecycle
   
-  override func viewDidLoad()
-  {
-    super.viewDidLoad()
-  
-  }
-  
-  // MARK: Do something
-  
-  //@IBOutlet weak var nameTextField: UITextField!
-  
+    override func viewDidLoad() {
+        initSearchController()
+        initTable()
+    }
 
-  
-
-    //nameTextField.text = viewModel.name
   
 }
 extension SearchViewControllerViewController: UISearchResultsUpdating, UISearchBarDelegate
