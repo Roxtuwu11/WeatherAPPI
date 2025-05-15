@@ -39,6 +39,18 @@ class WeatherViewModel {
         }
     }
     
+    func showCities() -> [City] {
+        let context = connectBD()
+        var city = [City]()
+        let fetchRequest: NSFetchRequest<City> = City.fetchRequest()
+        do {
+            city = try context.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Error al guardar: \(error.localizedDescription)")
+        }
+        return city
+    }
+    
     func presentError(error: Error?) {
         self.isLoading = false
         guard let err = error else { return  }

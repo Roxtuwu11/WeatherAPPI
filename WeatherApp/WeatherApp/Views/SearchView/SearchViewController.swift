@@ -18,6 +18,7 @@ class SearchViewControllerViewController: UIViewController
   
     @IBOutlet weak var cityTable: UITableView!
 
+    var city = [City]()
     let searchController =  UISearchController()
   // MARK: Object lifecycle
   
@@ -82,11 +83,23 @@ extension SearchViewControllerViewController: UISearchResultsUpdating, UISearchB
 
 extension SearchViewControllerViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return city.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        
+        let cellCity  = (tableView.dequeueReusableCell(withIdentifier: "CityTableViewCell", for: indexPath) as! CityTableViewCell)
+        cellCity.city = self.city.count > 0 ? self
+            .city[indexPath.row] : nil
+           
+        return cellCity
+    }
+    func tableView(
+        _ tableView: UITableView,
+        commit editingStyle: UITableViewCell.EditingStyle,
+        forRowAt indexPath: IndexPath
+    ) {
+        
     }
 
 }
