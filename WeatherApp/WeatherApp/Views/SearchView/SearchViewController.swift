@@ -12,7 +12,7 @@
 
 import UIKit
 
-class SearchViewControllerViewController: UIViewController
+class SearchViewController: UIViewController
 {
 
   
@@ -21,6 +21,7 @@ class SearchViewControllerViewController: UIViewController
     var city = [City]()
     let searchController =  UISearchController()
     var viewModel = WeatherViewModel()
+    var router = Router()
   // MARK: Object lifecycle
   
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
@@ -75,7 +76,7 @@ class SearchViewControllerViewController: UIViewController
 
   
 }
-extension SearchViewControllerViewController: UISearchResultsUpdating, UISearchBarDelegate
+extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate
 {
     func updateSearchResults(for searchController: UISearchController) {
         let searchBar =  searchController.searchBar
@@ -97,7 +98,7 @@ extension SearchViewControllerViewController: UISearchResultsUpdating, UISearchB
     
 }
 
-extension SearchViewControllerViewController: UITableViewDataSource, UITableViewDelegate {
+extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return city.count
     }
@@ -120,6 +121,13 @@ extension SearchViewControllerViewController: UITableViewDataSource, UITableView
         }
         self.city = self.viewModel.showCities()
         cityTable.reloadData()
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        router.navigateToResult()
     }
 
 }
