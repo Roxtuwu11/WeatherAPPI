@@ -98,7 +98,17 @@ class WeatherViewModel {
         }
 
     }
-    
+    func getCoordinates(of city: String)
+    {
+        let request = RequestCoordinates(name: city, count: 1)
+        
+        service.fetchCoordinates(request: request) { result in
+            
+        } onFailure: { error in
+            self.presentError(error: error)
+        }
+
+    }
     func presentError(error: Error?) {
         self.isLoading = false
         guard let err = error else { return  }

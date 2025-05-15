@@ -109,3 +109,38 @@ struct HourlyUnits: Codable {
         case windSpeed10M = "wind_speed_10m"
     }
 }
+
+struct RequestCoordinates: Codable {
+    let name: String
+    let count: Int
+}
+
+
+struct CityModel: Codable {
+    let results: [Result]
+    let generationtimeMS: Double
+
+    enum CodingKeys: String, CodingKey {
+        case results
+        case generationtimeMS = "generationtime_ms"
+    }
+}
+
+// MARK: - Result
+struct Result: Codable {
+    let id: Int
+    let name: String
+    let latitude, longitude, elevation: Int
+    let featureCode, countryCode: String
+    let population, countryID: Int
+    let country: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, latitude, longitude, elevation
+        case featureCode = "feature_code"
+        case countryCode = "country_code"
+        case population
+        case countryID = "country_id"
+        case country
+    }
+}

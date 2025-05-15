@@ -9,5 +9,6 @@ import Foundation
 
 struct URLConstants {
     static let weatherEndPoint = "https://api.open-meteo.com/v1/forecast?"
+    static let coordinatesEndPoint = "https://geocoding-api.open-meteo.com/v1/search?"
     
 }

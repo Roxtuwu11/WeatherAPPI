@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WeatherDetailView: View {
     //let weather: WeatherData
-
+    
     var body: some View {
         List {
             Section(header: Text("Temperaturas")) {

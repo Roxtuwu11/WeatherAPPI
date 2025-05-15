@@ -57,7 +57,7 @@ class APIClient {
 
             var urlRequest = URLRequest(url: finalURL)
             urlRequest.httpMethod = HTTPMethod.get.rawValue
-            urlRequest.setValue("APP_USR-3980890892821190-041316-6a135b7bcd33f714823d5ef6c37ac6b5-290788001", forHTTPHeaderField: "Authorization")
+            
 
             self.sessionManager.request(urlRequest).response { response in
                 if let res = response.response {
