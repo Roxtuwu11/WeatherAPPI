@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WeatherCurrentView: View {
-    @State var vm = WeatherViewModel()
+    @EnvironmentObject var viewModel: WeatherViewModel
 
     var body: some View {
         VStack(spacing: 20) {
