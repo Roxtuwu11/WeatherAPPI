@@ -9,32 +9,42 @@ import SwiftUI
 
 struct WeatherCurrentView: View {
     @EnvironmentObject var viewModel: WeatherViewModel
-
+    @EnvironmentObject var router: Router
     var body: some View {
         VStack(spacing: 20) {
-//            if let weather = viewModel.weather {
+            if let current = viewModel.currentWeather {
                 Text("México")
                     .font(.largeTitle)
                     .bold()
 
-                Text(" 30 C")
+                Text("\(Int(current.currentWeather!.temperature))°C")
                     .font(.system(size: 64))
                     .bold()
 
-                Text("El clima es frio")
+                Text(self.viewModel.description(for: current.currentWeather!.weathercode))
                     .font(.title2)
                     .foregroundColor(.gray)
-
-//             pñ´{{{´{{{{{{
-                .padding(.top, 20)
-//            } else {
-//                ProgressView("Cargando clima...")
-//            }
+                    .padding(.top, 20)
+                Button("Ver detalle del clima") {
+                    router.navigateTo(route: .detail)
+                               }
+                               .padding(.top, 30)
+                               .buttonStyle(.borderedProminent)
+            } else {
+                ProgressView("Cargando clima...")
+            }
         }
         .padding()
         .navigationTitle("Clima actual")
+        .onAppear {
+            viewModel.getCurrentWeather()
+        }
     }
+
+  
+
 }
+
 
 
 #Preview {

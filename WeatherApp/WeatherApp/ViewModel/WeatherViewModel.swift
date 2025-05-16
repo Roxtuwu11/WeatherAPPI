@@ -16,9 +16,46 @@ class WeatherViewModel: ObservableObject {
     @Published var messageError = ""
     @Published var currentWeather: WeatherData?
     @Published var historicalWeather: WeatherData?
+    @Published var city: City?
     private let service = WeatherService()
-    
-    
+   
+   
+
+    var latestTemperature: Double? {
+        historicalWeather?.hourly?.temperature2M.last
+       }
+
+       var minTemperature: Double? {
+           historicalWeather?.hourly?.temperature2M.min()
+       }
+
+       var maxTemperature: Double? {
+           historicalWeather?.hourly?.temperature2M.max()
+       }
+
+       var latestHumidity: Double? {
+           historicalWeather?.hourly?.temperature2M.last
+       }
+
+       var latestWind: Double? {
+           historicalWeather?.hourly?.temperature2M.last
+       }
+
+       var temperatureUnit: String {
+           historicalWeather?.hourlyUnits?.temperature2M ?? "°C"
+       }
+
+       var humidityUnit: String {
+           historicalWeather?.hourlyUnits?.relativeHumidity2M ?? "%"
+       }
+
+       var windUnit: String {
+           historicalWeather?.hourlyUnits?.windSpeed10M ?? "km/h"
+       }
+    func formatted(_ value: Double?, unit: String) -> String {
+        guard let value = value else { return "--" }
+        return String(format: "%.1f %@", value, unit)
+    }
     func connectBD() -> NSManagedObjectContext {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         return delegate.persistentContainer.viewContext
@@ -65,51 +102,81 @@ class WeatherViewModel: ObservableObject {
             print("Error al guardar: \(error.localizedDescription)")
         }
     }
-    func getCurrentWeather(latitude: Float, longitude: Float)
-    {
-        
+    private func fetchWeather(
+        latitude: Float,
+        longitude: Float,
+        pastDays: Int? = nil,
+        hourly: String? = nil,
+        currentWeather: Bool = false,
+        onSuccess: @escaping (WeatherData) -> Void
+    ) {
         let request = RequestWeather(
             latitude: latitude,
-            longitude: longitude,currentWeather: true
-           
+            longitude: longitude,
+            pastDays: pastDays, hourly: hourly, currentWeather: currentWeather
         )
         
         service.fetchWeather(request: request) { result in
-            guard let currentWeather = result else {return }
-            self.currentWeather = currentWeather
+            guard let weather = result else { return }
+            onSuccess(weather)
         } onFailure: { error in
             self.presentError(error: error)
         }
+    }
 
+    func getCurrentWeather() {
+        resolveCoordinates { lat, lon in
+            self.fetchWeather(latitude: lat, longitude: lon, currentWeather: true) { weather in
+                self.currentWeather = weather
+            }
+        }
     }
     
-    func getHistoricalWeather(latitude: Float, longitude: Float)
-    {
-       
-        let request = RequestWeather(
-            latitude: latitude,
-            longitude: longitude,pastDays: 10, hourly: ["temperature_2m","relative_humidity_2m","wind_speed_10m"]
-           
-        )
-        
-        service.fetchWeather(request: request) { result in
-            guard let currentWeather = result else {return }
-            self.historicalWeather = currentWeather
-        } onFailure: { error in
-            self.presentError(error: error)
+    func getHistoricalWeather() {
+        resolveCoordinates { lat, lon in
+            self.fetchWeather(
+                latitude: lat,
+                longitude: lon,
+                pastDays: 10,
+                hourly: Constants.hourlyParameters.joined(separator: ",")
+            ) { weather in
+                self.historicalWeather = weather
+            }
         }
-
     }
-    func getCoordinates(of city: String)
-    {
-        let request = RequestCoordinates(name: city, count: 1)
+
+    
+    private func resolveCoordinates(completion: @escaping (_ latitude: Float, _ longitude: Float) -> Void) {
+        guard let cityName = city?.cityName else {
+            presentError(error: ErrorServices__s.communication)
+            return
+        }
+
+        let request = RequestCoordinates(name: cityName, count: 1)
         
-        service.fetchCoordinates(request: request) { result in
-            
+        service.fetchCoordinates(request: request) { [self] result in
+            guard let coordinate = result?.results,
+                  let lat = coordinate.first?.latitude,
+                  let lon = coordinate.first?.longitude else {
+                      presentError(error: ErrorServices__s.communication)
+                return
+            }
+            completion(lat, lon)
         } onFailure: { error in
             self.presentError(error: error)
         }
+    }
 
+    
+    func description(for code: Int) -> String {
+        switch code {
+        case 0: return "Despejado"
+        case 1, 2, 3: return "Parcialmente nublado"
+        case 45, 48: return "Niebla"
+        case 51, 53, 55: return "Llovizna"
+        case 61, 63, 65: return "Lluvia"
+        default: return "Clima desconocido"
+        }
     }
     func presentError(error: Error?) {
         self.isLoading = false

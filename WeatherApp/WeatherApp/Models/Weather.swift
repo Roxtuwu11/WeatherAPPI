@@ -11,7 +11,7 @@ struct RequestWeather: Codable {
     let latitude: Float?
     let longitude: Float?
     let pastDays: Int?
-    let hourly: [String]?
+    let hourly: String?
     let currentWeather: Bool?
     
     enum CodingKeys: String, CodingKey {
@@ -23,7 +23,7 @@ struct RequestWeather: Codable {
         latitude: Float? = nil,
         longitude: Float? = nil,
         pastDays: Int? = nil,
-        hourly: [String]? = nil, currentWeather:Bool? = nil
+        hourly: String? = nil, currentWeather:Bool? = nil
     ) {
         self.latitude = latitude
         self.longitude = longitude
@@ -119,7 +119,7 @@ struct RequestCoordinates: Codable {
 
 
 struct CityModel: Codable {
-    let results: [Result]
+    let results: [Result]?
     let generationtimeMS: Double
 
     enum CodingKeys: String, CodingKey {
@@ -132,7 +132,7 @@ struct CityModel: Codable {
 struct Result: Codable {
     let id: Int
     let name: String
-    let latitude, longitude, elevation: Int
+    let latitude, longitude, elevation: Float
     let featureCode, countryCode: String
     let population, countryID: Int
     let country: String

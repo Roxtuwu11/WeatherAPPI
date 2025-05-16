@@ -12,14 +12,14 @@ import SwiftUI
 
 class Router: ObservableObject{
     weak var viewController: SearchViewController?
-     var routes: [Route] = []
+    @Published  var routes: [Route] = []
     func navigateToCurrentWeather(viewModel: WeatherViewModel)
     {
         let uiHost = UIHostingController(rootView:
                                            
             WeatherRootView()
-            .environmentObject(viewModel))
-         
+            .environmentObject(viewModel).environmentObject(self) )
+            
          viewController?.navigationController?.pushViewController(uiHost,
                                                                        animated: true)
     }
@@ -40,7 +40,7 @@ class Router: ObservableObject{
 
 enum Route: Hashable {
 
-    case detail(weather: WeatherData)
+    case detail
     
 }
 

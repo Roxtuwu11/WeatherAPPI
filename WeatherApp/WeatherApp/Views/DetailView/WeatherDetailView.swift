@@ -7,40 +7,49 @@
 
 import SwiftUI
 
+
+
 struct WeatherDetailView: View {
-    let weather: WeatherData
-    
+    @EnvironmentObject var viewModel: WeatherViewModel
+
     var body: some View {
         List {
-            Section(header: Text("Temperaturas")) {
-                HStack {
-                    Text("Mínima")
-                    Spacer()
-                    Text("30 °C")
+            if (viewModel.historicalWeather != nil) {
+                Section(header: Text("Temperaturas")) {
+                    HStack {
+                        Text("Mínima")
+                        Spacer()
+                        Text(viewModel.formatted(viewModel.minTemperature, unit: viewModel.temperatureUnit))
+                    }
+                    
+                    HStack {
+                        Text("Máxima")
+                        Spacer()
+                        Text(viewModel.formatted(viewModel.maxTemperature, unit: viewModel.temperatureUnit))
+                    }
                 }
-
-                HStack {
-                    Text("Máxima")
-                    Spacer()
-                    Text("30 °C")
+                
+                Section(header: Text("Otros datos")) {
+                    HStack {
+                        Text("Humedad")
+                        Spacer()
+                        Text(viewModel.formatted(viewModel.latestHumidity, unit: viewModel.humidityUnit))
+                    }
+                    
+                    HStack {
+                        Text("Viento")
+                        Spacer()
+                        Text(viewModel.formatted(viewModel.latestWind, unit: viewModel.windUnit))
+                    }
                 }
+            }else {
+                ProgressView("Cargando clima...")
             }
-
-            Section(header: Text("Otros datos")) {
-                HStack {
-                    Text("Humedad")
-                    Spacer()
-                    Text("30 %")
-                }
-
-                HStack {
-                    Text("Viento")
-                    Spacer()
-                    Text("60 m/s")
-                }
-            }
+        }.onAppear {
+            self.viewModel.getHistoricalWeather()
         }
-        //.navigationTitle("Detalles de \(weather.cityName)")
     }
+
+
 }
 
