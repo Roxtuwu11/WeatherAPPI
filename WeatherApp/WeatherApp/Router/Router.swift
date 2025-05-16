@@ -7,14 +7,18 @@
 
 import Foundation
 import SwiftUI
-weak var viewController: SearchViewController?
 
-@Observable
-class Router{
-    var routes: [Route] = []
-    func navigateToResult()
+
+
+class Router: ObservableObject{
+    weak var viewController: SearchViewController?
+     var routes: [Route] = []
+    func navigateToCurrentWeather(viewModel: WeatherViewModel)
     {
-        let uiHost = UIHostingController(rootView: WeatherCurrentView())
+        let uiHost = UIHostingController(rootView:
+                                           
+            WeatherCurrentView()
+            .environmentObject(viewModel))
          
          viewController?.navigationController?.pushViewController(uiHost,
                                                                        animated: true)

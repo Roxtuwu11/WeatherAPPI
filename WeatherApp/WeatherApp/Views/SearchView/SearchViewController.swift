@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import SwiftUICore
 
 class SearchViewController: UIViewController
 {
@@ -20,7 +21,7 @@ class SearchViewController: UIViewController
 
     var city = [City]()
     let searchController =  UISearchController()
-    var viewModel = WeatherViewModel()
+    @State var viewModel = WeatherViewModel()
     var router = Router()
   // MARK: Object lifecycle
   
@@ -127,7 +128,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        router.navigateToResult()
+        router.navigateToCurrentWeather(viewModel: self.viewModel)
     }
 
 }

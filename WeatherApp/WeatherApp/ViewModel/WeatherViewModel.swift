@@ -9,14 +9,16 @@ import Foundation
 import Observation
 import CoreData
 import UIKit
-@Observable
-class WeatherViewModel {
-    var isLoading = true
-    var showErrorAlert = false
-    var messageError = ""
-    var currentWeather: WeatherData?
-    var historicalWeather: WeatherData?
+
+class WeatherViewModel: ObservableObject {
+    @Published var isLoading = true
+    @Published var showErrorAlert = false
+    @Published var messageError = ""
+    @Published var currentWeather: WeatherData?
+    @Published var historicalWeather: WeatherData?
     private let service = WeatherService()
+    
+    
     func connectBD() -> NSManagedObjectContext {
         let delegate = UIApplication.shared.delegate as! AppDelegate
         return delegate.persistentContainer.viewContext
