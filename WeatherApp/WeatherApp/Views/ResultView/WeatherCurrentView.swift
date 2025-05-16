@@ -13,7 +13,7 @@ struct WeatherCurrentView: View {
     var body: some View {
         VStack(spacing: 20) {
             if let current = viewModel.currentWeather {
-                Text("México")
+                Text(viewModel.city?.cityName ?? "")
                     .font(.largeTitle)
                     .bold()
 
@@ -33,6 +33,14 @@ struct WeatherCurrentView: View {
             } else {
                 ProgressView("Cargando clima...")
             }
+        }
+        .alert("Error", isPresented: $viewModel.showErrorAlert) {
+            Button("Reintentar", action: {
+                viewModel.showErrorAlert = false
+                router.popToRoot()
+            })
+        } message: {
+            Text(viewModel.messageError)
         }
         .padding()
         .navigationTitle("Clima actual")
