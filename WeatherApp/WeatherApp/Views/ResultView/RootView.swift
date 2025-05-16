@@ -9,19 +9,19 @@ import SwiftUI
 
 struct WeatherRootView: View {
     @EnvironmentObject var viewModel: WeatherViewModel
-    @ObservedObject var router =  Router()
+    @EnvironmentObject var router: Router
     var body: some View {
         NavigationStack(path: $router.routes) {
             WeatherCurrentView()
                 .navigationDestination(for: Route.self) { route in
                     switch route {
-                    case .detail(let weather):
-                        WeatherDetailView(weather: weather)
+                    case .detail:
+                        WeatherDetailView()
                
                    
                     }
                 }
-        }
+        }.environmentObject(router)
     }
 }
 
