@@ -16,6 +16,7 @@ struct WeatherRootView: View {
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case .detail:
+                        
                         WeatherDetailView()
                
                    
