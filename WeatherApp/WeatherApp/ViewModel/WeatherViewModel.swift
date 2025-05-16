@@ -16,6 +16,7 @@ class WeatherViewModel: ObservableObject {
     @Published var messageError = ""
     @Published var currentWeather: WeatherData?
     @Published var historicalWeather: WeatherData?
+    @Published var city: City?
     private let service = WeatherService()
     
     
@@ -65,7 +66,7 @@ class WeatherViewModel: ObservableObject {
             print("Error al guardar: \(error.localizedDescription)")
         }
     }
-    func getCurrentWeather(latitude: Float, longitude: Float)
+    func getCurrentWeather(latitude: Float?, longitude: Float?)
     {
         
         let request = RequestWeather(
@@ -100,16 +101,23 @@ class WeatherViewModel: ObservableObject {
         }
 
     }
-    func getCoordinates(of city: String)
-    {
-        let request = RequestCoordinates(name: city, count: 1)
-        
+    func getCoordinatesAndThenFetchWeather() {
+        guard let currentCity = city else { return }
+
+        let request = RequestCoordinates(name: currentCity.cityName ?? "", count: 1)
+
         service.fetchCoordinates(request: request) { result in
+            guard let resp = result  else { return }
+            guard let coordinates = resp.results else { return}
             
+            self.getCurrentWeather(
+                latitude: coordinates.first?.latitude,
+                longitude: coordinates.first?.longitude
+            )
+
         } onFailure: { error in
             self.presentError(error: error)
         }
-
     }
     func presentError(error: Error?) {
         self.isLoading = false

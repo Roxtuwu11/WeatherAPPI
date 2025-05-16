@@ -33,7 +33,11 @@ struct WeatherCurrentView: View {
         }
         .padding()
         .navigationTitle("Clima actual")
+        .onAppear{
+            self.viewModel.getCoordinatesAndThenFetchWeather()
+        }
     }
+        
 }
 
 

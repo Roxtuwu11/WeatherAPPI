@@ -119,7 +119,7 @@ struct RequestCoordinates: Codable {
 
 
 struct CityModel: Codable {
-    let results: [Result]
+    let results: [Result]?
     let generationtimeMS: Double
 
     enum CodingKeys: String, CodingKey {
@@ -132,7 +132,7 @@ struct CityModel: Codable {
 struct Result: Codable {
     let id: Int
     let name: String
-    let latitude, longitude, elevation: Int
+    let latitude, longitude, elevation: Float
     let featureCode, countryCode: String
     let population, countryID: Int
     let country: String

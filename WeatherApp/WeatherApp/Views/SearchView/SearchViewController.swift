@@ -21,7 +21,7 @@ class SearchViewController: UIViewController
 
     var city = [City]()
     let searchController =  UISearchController()
-    @State var viewModel = WeatherViewModel()
+    var viewModel = WeatherViewModel()
     var router = Router()
   // MARK: Object lifecycle
   
@@ -62,6 +62,7 @@ class SearchViewController: UIViewController
     func configureViewController() {
         self.city = self.viewModel.showCities()
         self.cityTable.reloadData()
+        self.router.viewController = self
     }
   
 
@@ -80,9 +81,10 @@ class SearchViewController: UIViewController
 extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate
 {
     func updateSearchResults(for searchController: UISearchController) {
-        let searchBar =  searchController.searchBar
         
     }
+
+  
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let cityName = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines),
               !cityName.isEmpty else { return }
@@ -128,6 +130,7 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
+        self.viewModel.city = city[indexPath.row]
         router.navigateToCurrentWeather(viewModel: self.viewModel)
     }
 
