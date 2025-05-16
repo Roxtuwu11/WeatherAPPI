@@ -34,15 +34,17 @@ struct RequestWeather: Codable {
 }
 
 
-struct WeatherData: Codable {
-    let latitude, longitude, generationtimeMS: Double
-    let utcOffsetSeconds: Int
-    let timezone, timezoneAbbreviation: String
-    let elevation: Int
-    let currentWeatherUnits: CurrentWeatherUnits
-    let currentWeather: CurrentWeather
-    let hourlyUnits: HourlyUnits
-    let hourly: Hourly
+struct WeatherData: Codable,Equatable, Hashable{
+
+
+    let latitude, longitude, generationtimeMS: Double?
+    let utcOffsetSeconds: Int?
+    let timezone, timezoneAbbreviation: String?
+    let elevation: Int?
+    let currentWeatherUnits: CurrentWeatherUnits?
+    let currentWeather: CurrentWeather?
+    let hourlyUnits: HourlyUnits?
+    let hourly: Hourly?
 
     enum CodingKeys: String, CodingKey {
         case latitude, longitude
@@ -59,7 +61,7 @@ struct WeatherData: Codable {
 }
 
 // MARK: - CurrentWeather
-struct CurrentWeather: Codable {
+struct CurrentWeather: Codable, Equatable, Hashable {
     let time: String
     let interval: Int
     let temperature, windspeed: Double
@@ -73,7 +75,7 @@ struct CurrentWeather: Codable {
 }
 
 // MARK: - CurrentWeatherUnits
-struct CurrentWeatherUnits: Codable {
+struct CurrentWeatherUnits: Codable, Equatable, Hashable {
     let time, interval, temperature, windspeed: String
     let winddirection, isDay, weathercode: String
 
@@ -84,7 +86,7 @@ struct CurrentWeatherUnits: Codable {
     }
 }
 
-struct Hourly: Codable {
+struct Hourly: Codable, Equatable, Hashable {
     let time: [String]
     let temperature2M: [Double]
     let relativeHumidity2M: [Int]
@@ -99,7 +101,7 @@ struct Hourly: Codable {
 }
 
 // MARK: - HourlyUnits
-struct HourlyUnits: Codable {
+struct HourlyUnits: Codable, Equatable, Hashable {
     let time, temperature2M, relativeHumidity2M, windSpeed10M: String
 
     enum CodingKeys: String, CodingKey {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WeatherDetailView: View {
-    //let weather: WeatherData
+    let weather: WeatherData
     
     var body: some View {
         List {
@@ -44,6 +44,3 @@ struct WeatherDetailView: View {
     }
 }
 
-#Preview {
-    WeatherDetailView()
-}

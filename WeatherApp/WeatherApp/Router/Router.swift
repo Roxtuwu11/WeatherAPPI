@@ -17,7 +17,7 @@ class Router: ObservableObject{
     {
         let uiHost = UIHostingController(rootView:
                                            
-            WeatherCurrentView()
+            WeatherRootView()
             .environmentObject(viewModel))
          
          viewController?.navigationController?.pushViewController(uiHost,
@@ -39,8 +39,8 @@ class Router: ObservableObject{
 }
 
 enum Route: Hashable {
-    case result
-    case detail
+
+    case detail(weather: WeatherData)
     
 }
 
